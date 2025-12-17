@@ -52,6 +52,11 @@ for k = 1:numel(It)
     V2_last = V2;
 end
 Pt = Vt .* It;
+
+[Pmp, idx] = max(Pt);    
+Vmp = Vt(idx);                
+Imp = It(idx);                
+fprintf('MPPT -> Vmp = %.3f V, Imp = %.3f A, Pmp = %.3f W\n', Vmp, Imp, Pmp);
 %% figure
 figure
 plot(Vt,It,'LineWidth',2);
@@ -68,3 +73,14 @@ xlabel('Voltage (V)');
 ylabel('Power (W)'); 
 title('P–V curve of two PV cells in series for different irradiance');
 grid on
+
+figure
+plot(Vt, Pt, 'LineWidth', 2);  
+grid on;  
+xlim([0 85])
+hold on
+plot(Vmp, Pmp, 'o', 'MarkerSize', 8, 'LineWidth', 1.5);   
+xline(Vmp, '--');  yline(Pmp, '--');             
+legend('P–V','MPPT','Location','best');
+xlabel('Voltage (V)'); ylabel('Power (W)');
+title(sprintf('P–V curve (MPP at V=%.3f V, P=%.3f W)', Vmp, Pmp));
